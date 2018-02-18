@@ -1,0 +1,68 @@
+{
+    "App": {
+        "Name": "My Demo App"
+    },
+    "ServiceStack": {
+        "HostConfig": {
+            "DefaultDocuments": ["default.htm", "default.html", "default.cshtml", "default.md", "index.htm", "index.html", "default.aspx", "default.ashx"],
+            "IgnoreWarningsOnPropertyNames": ["format", "callback", "debug", "authsecret", "jsconfig", "_", "version", "v", "Version", "apikey", "code"],
+            "RazorNamespaces": [],
+            "RedirectPaths": {
+                "/metadata/": "/metadata"
+            },
+            "ScanSkipPaths": ["obj/", "bin/", "node_modules/", "jspm_packages/", "bower_components/", "wwwroot_build/"],
+            "AllowSessionCookies": true,
+            "AllowSessionIdsInHttpParams": false,
+            "OnlySendSessionCookiesSecurely": false,
+            "UseSaltedHash": false,
+            "LogUnobservedTaskExceptions": true,
+            "DisposeDependenciesAfterUse": true,
+            "WriteErrorsToResponse": true,
+            "ReturnsInnerException": true,
+            "DefaultJsonpCacheExpiration": "00:20:00",
+            "AllowJsConfig": true,
+            "DisableChunkedEncoding": false,
+            "EnableOptimizations": true,
+            "UseCamelCase": true,
+            "UseHttpsLinks": false,
+            "RedirectDirectoriesToTrailingSlashes": true,
+            "SkipFormDataInCreatingRequest": false,
+            "StripApplicationVirtualPath": false,
+            "RedirectToDefaultDocuments": false,
+            "AddRedirectParamsToQueryString": false,
+            "AllowAclUrlReservation": true,
+            "AllowNonHttpOnlyCookies": false,
+            "AllowPartialResponses": true,
+            "Return204NoContentForEmptyResponse": true,
+            "UseBclJsonSerializers": false,
+            "DebugMode": true,
+            "AllowRouteContentTypeExtensions": true,
+            "AllowJsonpRequests": true,
+            "PreferredContentTypes": ["text/html", "application/json", "application/xml", "application/jsv"],
+            "ApiVersion": "1.0",
+            "WsdlServiceNamespace": "http://schemas.servicestack.net/types",
+            "IgnoreWarningsOnAllProperties": false,
+            "EnableAccessRestrictions": true,
+            "WebHostPhysicalPath": "/Users/MJC/Projects/GitHub/mattjcowan/servicestack-demos/demo_config",
+            "EnableFeatures": 2147483647,
+            "AddMaxAgeForStaticMimeTypes": {
+                "image/gif": "01:00:00",
+                "image/png": "01:00:00",
+                "image/jpeg": "01:00:00"
+            },
+            "GlobalResponseHeaders": {
+                "Vary": "Accept",
+                "X-Powered-By": "ServiceStack/5.02 NETStandard/.NET"
+            },
+            "AllowFilePaths": ["jspm_packages/**/*.json"],
+            "ForbiddenPaths": [],
+            "HtmlReplaceTokens": {},
+            "EmbeddedResourceTreatAsFiles": [],
+            "CompressFilesWithExtensions": [],
+            "AllowFileExtensions": ["js", "ts", "tsx", "jsx", "css", "htm", "html", "shtm", "txt", "xml", "rss", "csv", "pdf", "jpg", "jpeg", "gif", "png", "bmp", "ico", "tif", "tiff", "svg", "avi", "divx", "m3u", "mov", "mp3", "mpeg", "mpg", "qt", "vob", "wav", "wma", "wmv", "flv", "swf", "xap", "xaml", "ogg", "ogv", "mp4", "webm", "eot", "ttf", "woff", "woff2", "map"],
+            "IgnoreFormatsInMetadata": [],
+            "AppendUtf8CharsetOnContentTypes": ["application/json"]
+        }
+    },
+    "USER": "johndoe"
+}
