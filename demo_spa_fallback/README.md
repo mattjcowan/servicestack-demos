@@ -9,7 +9,7 @@ Inspect [Program.cs](Program.cs) for yourself to see how to configure ServiceSta
 ## Run this demo
 
 ```shell
-cd demo_base
+cd demo_spa_fallback
 dotnet restore
 dotnet run # or dotnet watch
 ```
