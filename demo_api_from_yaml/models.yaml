@@ -1,0 +1,37 @@
+- singular: Car
+  plural: Cars
+  slug: cars
+  roles:
+    read: "*"
+  fields:
+  - type: string
+    name: Color
+  - type: int
+    name: NumberOfPassengers
+    label: Number of Passengers
+  - type: DateTime?
+    name: Decommissioned
+    roles:
+      read: "*"
+      create: Admin, Developer
+      update: Admin, Developer
+      delete: Admin
+- singular: Book
+  plural: Books
+  slug: books
+  roles:
+    read: "*"
+    create: BookEditor, Librarian
+    update: BookEditor, Librarian
+    delete: Librarian
+  fields:
+  - type: string
+    name: Title
+  - type: string
+    name: Publisher
+  - type: System.Guid
+    name: Uid
+  - type: string
+    name: Isbn
+  - type: DateTime?
+    name: PublishDate
