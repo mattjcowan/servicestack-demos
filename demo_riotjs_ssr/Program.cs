@@ -18,52 +18,42 @@ using Microsoft.Extensions.Logging;
 using ServiceStack;
 using ServiceStack.Configuration;
 
-namespace demo
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
+namespace demo {
+    public class Program {
+        public static void Main (string[] args) {
+            BuildWebHost (args).Run ();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .ConfigureServices(services => {
-                    // Enable Node Services
-                    services.AddNodeServices();
-                })
-                .Configure(app => {
-                    var provider = new FileExtensionContentTypeProvider();
-                    provider.Mappings[".tag"] = "text/html";
-                    app.UseDefaultFiles();
-                    app.UseStaticFiles(new StaticFileOptions(new SharedOptions { 
-                        FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")), // , "tags"
-                        RequestPath = "", //"/tags"
-                    })
-                    {
-                        // FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")), // , "tags"
-                        // RequestPath = "", //"/tags",
-                        ContentTypeProvider = provider
-                    });
-                    app.UseServiceStack(new AppHost(app.ApplicationServices));
-                })
-                .Build();
+        public static IWebHost BuildWebHost (string[] args) =>
+            WebHost.CreateDefaultBuilder (args)
+            .ConfigureServices (services => {
+                // Enable Node Services
+                services.AddNodeServices ();
+            })
+            .Configure (app => {
+                var provider = new FileExtensionContentTypeProvider ();
+                provider.Mappings[".tag"] = "text/html";
+                app.UseDefaultFiles ();
+                app.UseStaticFiles (new StaticFileOptions (new SharedOptions {
+                    FileProvider = new PhysicalFileProvider (Path.Combine (Directory.GetCurrentDirectory (), "wwwroot")),
+                        RequestPath = ""
+                }) {
+                    ContentTypeProvider = provider
+                });
+                app.UseServiceStack (new AppHost (app.ApplicationServices));
+            })
+            .Build ();
     }
 
-    public class AppHost : AppHostBase
-    {
-        public AppHost(IServiceProvider services):
-            base(services.GetRequiredService<IHostingEnvironment>().ApplicationName, typeof(AppHost).Assembly)
-        {
-            this.AppSettings = new NetCoreAppSettings(services.GetRequiredService<IConfiguration>());
-            this.RootDir = services.GetRequiredService<IHostingEnvironment>().ContentRootPath;
-            this.TagsDir = Path.Combine(services.GetRequiredService<IHostingEnvironment>().WebRootPath, "tags");
-        }
+    public class AppHost : AppHostBase {
+        public AppHost (IServiceProvider services):
+            base (services.GetRequiredService<IHostingEnvironment> ().ApplicationName, typeof (AppHost).Assembly) {
+                this.AppSettings = new NetCoreAppSettings (services.GetRequiredService<IConfiguration> ());
+                this.RootDir = services.GetRequiredService<IHostingEnvironment> ().ContentRootPath;
+                this.TagsDir = Path.Combine (services.GetRequiredService<IHostingEnvironment> ().WebRootPath, "tags");
+            }
 
-        public override void Configure(Container container)
-        {
-        }
+        public override void Configure (Container container) { }
 
         public static readonly string ToDoHtml = @"
 <!doctype html>
@@ -97,86 +87,71 @@ namespace demo
     </script>
   </body>
 </html>
-        ".Trim();
+        ".Trim ();
 
         public string RootDir { get; }
         public string TagsDir { get; }
     }
 
-    public class TodosService: Service
-    {
-        public static ConcurrentDictionary<string, Todo> todosDictionary = new ConcurrentDictionary<string, Todo>();
+    public class TodosService : Service {
+        public static ConcurrentDictionary<string, Todo> todosDictionary = new ConcurrentDictionary<string, Todo> ();
 
-        static TodosService()
-        {
-            var todos = new List<Todo>();
-            todos.Add(new Todo { title = "Avoid excessive caffeine", done = true });  
-            todos.Add(new Todo { title = "Hidden item", hidden = true }); 
-            todos.Add(new Todo { title = "Be less provocative" }); 
-            todos.Add(new Todo { title = "Be nice to people" });     
-            foreach(var t in todos)
-                todosDictionary.TryAdd(t.title, t);
+        static TodosService () {
+            var todos = new List<Todo> ();
+            todos.Add (new Todo { title = "Avoid excessive caffeine", done = true });
+            todos.Add (new Todo { title = "Hidden item", hidden = true });
+            todos.Add (new Todo { title = "Be less provocative" });
+            todos.Add (new Todo { title = "Be nice to people" });
+            foreach (var t in todos)
+                todosDictionary.TryAdd (t.title, t);
         }
 
-        public object Get(TodosRequest request)
-        {
-            return todosDictionary.Values.ToList();
+        public object Get (TodosRequest request) {
+            return todosDictionary.Values.ToList ();
         }
 
-        public object Post(TodosPostRequest request)
-        {
-            todosDictionary.Clear();     
-            foreach(var t in request)
-                todosDictionary.TryAdd(t.title, t);
-            return todosDictionary.Values.ToList();
+        public object Post (TodosPostRequest request) {
+            todosDictionary.Clear ();
+            foreach (var t in request)
+                todosDictionary.TryAdd (t.title, t);
+            return todosDictionary.Values.ToList ();
         }
     }
 
-    [Route("/todos", "GET")]
-    public class TodosRequest: IReturn<List<Todo>>
-    {
-    }
+    [Route ("/todos", "GET")]
+    public class TodosRequest : IReturn<List<Todo>> { }
 
-    [Route("/todos", "POST")]
-    public class TodosPostRequest: List<Todo>, IReturn<List<Todo>>
-    {
-    }
+    [Route ("/todos", "POST")]
+    public class TodosPostRequest : List<Todo>, IReturn<List<Todo>> { }
 
-    public class Todo 
-    {
+    public class Todo {
         public string title { get; set; }
         public bool done { get; set; }
         public bool hidden { get; set; }
     }
 
-    public class FallbackService: Service
-    {
+    public class FallbackService : Service {
         public INodeServices NodeServices { get; set; }
 
-        public async Task<object> Any(FallbackRequest request)
-        {
-            if (Request.ResponseContentType == MimeTypes.Html)
-            {
+        public async Task<object> Any (FallbackRequest request) {
+            if (Request.ResponseContentType == MimeTypes.Html) {
                 var tagsDir = (AppHost.Instance as AppHost).TagsDir;
                 var rootDir = (AppHost.Instance as AppHost).RootDir;
-                if(request.Path.EqualsIgnoreCase("ssr"))
-                {
-                    var result = await NodeServices.InvokeAsync<string>(
-                        Path.Combine(rootDir, "CompileTag.js"), 
-                        Path.Combine(tagsDir, "todo.tag"), 
-                        Gateway.Send(new TodosRequest()));
-                    return new HttpResult(AppHost.ToDoHtml.Replace("<todo></todo>", result)); 
-                }
-                else
-                    return new HttpResult(AppHost.ToDoHtml);
+                if (request.Path.EqualsIgnoreCase ("ssr")) {
+                    var result = await NodeServices.InvokeAsync<string> (
+                        Path.Combine (rootDir, "CompileTag.js"),
+                        Path.Combine (tagsDir, "todo.tag"),
+                        Gateway.Send (new TodosRequest ()));
+                    return new HttpResult (AppHost.ToDoHtml.Replace ("<todo></todo>", result));
+                } else
+                    return new HttpResult (AppHost.ToDoHtml);
             }
             return request;
         }
     }
 
-    [FallbackRoute("/{Path*}")]
-    public class FallbackRequest
-    {
+    [FallbackRoute ("/{Path*}")]
+    public class FallbackRequest {
         public string Path { get; set; }
     }
 }
