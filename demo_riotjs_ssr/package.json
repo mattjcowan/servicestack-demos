@@ -1,0 +1,16 @@
+{
+  "name": "demo_riotjs_ssr",
+  "version": "1.0.0",
+  "description": "RiotJS SSR setup for configuring ServiceStack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "riot": "3.9.0"
+  },
+  "dependencies": {},
+  "keywords": []
+}
