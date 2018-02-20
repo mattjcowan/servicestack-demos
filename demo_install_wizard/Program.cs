@@ -120,11 +120,16 @@ namespace demo {
     public class FallbackService : Service { 
         public object Any(FallbackRequest request)
         {
-            return HttpError.NotFound("Not Found");
+            if (string.IsNullOrWhiteSpace(request.Path))
+            {
+                var fi = new FileInfo(Path.Combine((AppHost.Instance as AppHost).RootDir, "wwwroot/index-page.html"));
+                return new HttpResult(fi);
+            }
+            throw HttpError.NotFound("Not Found");
         }
     }
 
-    [FallbackRoute ("/{Path*")]
+    [FallbackRoute ("/{Path*}")]
     public class FallbackRequest {
         public string Path { get; set; }
     }

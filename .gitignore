@@ -1,5 +1,5 @@
 # Files
-
+*.sqlite
 
 # Directories
 node_modules/

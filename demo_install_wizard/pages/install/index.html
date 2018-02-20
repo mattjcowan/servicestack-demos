@@ -22,13 +22,13 @@
             <legend>Database Connection Details</legend>
             <div class="form-check">
                 <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="dialect" id="sqlite" value="sqlite">
+                <input type="radio" class="form-check-input" name="dialect" id="sqlite" value="sqlite" checked>
                 SqLite
                 </label>
             </div>
             <div class="form-check">
                 <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="dialect" id="mysql" value="mysql" checked>
+                <input type="radio" class="form-check-input" name="dialect" id="mysql" value="mysql">
                 MySql
                 </label>
             </div>
@@ -74,7 +74,9 @@
     </div>
 
     <div class="container status" style="padding-top: 10px;">
-        <div class="alert alert-success" style="display: none;" role="alert"> <strong>Success! </strong> You are being redirected. <strong>Please wait ...</strong>
+        <div class="alert alert-success" style="display: none;" role="alert"> <strong>Success! </strong> 
+            You are being redirected. <strong>Please wait ...</strong><br/>
+            <i>If you did not setup your process to restart automatically (ie: pm2, nginx, iis), you may need to restart the app server at this time.</i>
         </div>
         <div class="alert alert-warning" style="display: none;" role="alert"> <strong>Oops! </strong> <span class="error-message"></span>
         </div>
