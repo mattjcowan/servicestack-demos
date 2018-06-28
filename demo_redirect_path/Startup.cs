@@ -45,27 +45,26 @@ namespace demo
         {
             var request = context.HttpContext.Request;
             var path = request.Path.Value;
-            if (path.Equals("/docs", StringComparison.OrdinalIgnoreCase))
+            var pathLowerCase = path.ToLower();
+
+            var redirects = new Dictionary<string, string>() { { "/docs", "/docs/" }, { "/api", "/api/" } };
+            if (redirects.ContainsKey(pathLowerCase))
             {
-                context.HttpContext.Response.Redirect("/docs/", false);
-            } 
-            else if (path.Equals("/api", StringComparison.OrdinalIgnoreCase))
-            {
-                context.HttpContext.Response.Redirect("/api/", false);
+                context.HttpContext.Response.Redirect(redirects[pathLowerCase], true);
             }
             else 
             {
-                if (path.StartsWith("/docs/", StringComparison.OrdinalIgnoreCase))
+                if (pathLowerCase.StartsWith("/docs/"))
                 {
-                    request.Path = "/swagger-ui/" + (path.Length == 5 ? "": request.Path.Value.Substring(6));
+                    request.Path = "/swagger-ui/" + path.Substring(6);
                 }
-                else if (path.Equals("/api/", StringComparison.OrdinalIgnoreCase))
+                else if (pathLowerCase.Equals("/api/"))
                 {
                     request.Path = "/metadata";
                 } 
-                else if (path.StartsWith("/api/", StringComparison.OrdinalIgnoreCase))
+                else if (pathLowerCase.StartsWith("/api/"))
                 {
-                    request.Path = request.Path.Value.Substring(4);
+                    request.Path = path.Substring(4);
                 }
             }
         }
@@ -76,9 +75,6 @@ namespace demo
         public AppHost(): base("demo", typeof(AppHost).Assembly) {}
         public override void Configure(Container container)
         {
-            SetConfig(new HostConfig {
-                // DefaultRedirectPath = "/"
-            });
             Plugins.Add(new ServiceStack.Api.OpenApi.OpenApiFeature());
         }
     }
