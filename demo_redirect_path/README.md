@@ -10,7 +10,7 @@ I find this helpful when for example I need to develop an API that runs both as:
 
 - https://api.mydomain.com
 - https://mydomain.com/api
-s
+
 ## Run this demo
 
 Now run the dotnet app
