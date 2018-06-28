@@ -14,6 +14,7 @@ A collection of .NET core ServiceStack demos
 [X] | [Generating models and a CRUD API at runtime from a YAML file and Roslyn](demo_api_from_yaml/). Includes Swagger UI to add/edit/update records.
 [X] | [NodeJS SSR](demo_riotjs_ssr/) ([RiotJS](http://riotjs.com/) example with [NodeServices](https://github.com/aspnet/JavaScriptServices/tree/dev/src/Microsoft.AspNetCore.NodeServices#microsoftaspnetcorenodeservices))
 [X] | [Order of operations demo](demo_order_of_operations/) that lets you see details related to AppHost overrides and their order of execution in the request lifecycle. Extend as needed if something's missing for your use-case.
+[X] | [API path rewriting](demo_redirect_path/) leveraging the URL Rewriting Middleware in ASPNET Core.
 [ ] | Serving overrideable embedded resources (css, js, custom extensions, custom routes)
 [ ] | Page builder example
 [ ] | Test driven development example
